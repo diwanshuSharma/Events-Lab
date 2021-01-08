@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Events.Web.Controllers
 {
+    [ValidateInput(false)]
     public class BaseController : Controller
     {
         // GET: Base

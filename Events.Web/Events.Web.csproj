@@ -255,6 +255,8 @@
     <Content Include="Views\Events\My.cshtml" />
     <Content Include="Views\Shared\_Notifications.cshtml" />
     <Content Include="Scripts\jquery.validate.unobtrusive.bootstrap.min.js.map" />
+    <Content Include="Views\Shared\_Events.cshtml" />
+    <Content Include="Views\Events\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
