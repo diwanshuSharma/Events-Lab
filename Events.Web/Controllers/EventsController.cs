@@ -4,6 +4,7 @@ using Events.Web.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -28,6 +29,15 @@ namespace Events.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(EventInputModel model)
         {
+            string filename = Path.GetFileNameWithoutExtension(model.ImageFile.FileName);
+            string extension = Path.GetExtension(model.ImageFile.FileName);
+            filename = filename + extension;
+
+            // saving Image
+            var savefilename = Path.Combine(Server.MapPath("~/Image/"), filename);
+            model.ImageFile.SaveAs(savefilename);
+            
+            filename =  "~/Image/" + filename;
             if(model != null && this.ModelState.IsValid)
             {
                 var e = new Event()
@@ -38,8 +48,12 @@ namespace Events.Web.Controllers
                     Duration = model.Duration,
                     Description = model.Description,
                     Location = model.Location,
-                    IsPublic = model.IsPublic
+                    IsPublic = model.IsPublic,
+                    ImagePath = filename
                 };
+
+                // saving file into folder
+
 
                 this.db.Events.Add(e);
                 this.db.SaveChanges();
@@ -85,7 +99,7 @@ namespace Events.Web.Controllers
             // var model = this.db.Events.Find(id);
             // var model = EventInputModel.CreateFromEvent(eventToEdit);
             
-            var model = from e in this.db.Events
+            var model = (from e in this.db.Events
             where e.Id == id
             select new EventInputModel()
             {
@@ -95,7 +109,8 @@ namespace Events.Web.Controllers
                     Description = e.Description,
                     Location = e.Location,
                     IsPublic = e.IsPublic
-            };
+            }).FirstOrDefault();
+            
             return this.View(model);
         }
 
@@ -134,5 +149,40 @@ namespace Events.Web.Controllers
 
             return this.View(model);
         }
+
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            var deleteEvent = (from e in this.db.Events
+                              where e.Id == id
+                              select new EventViewModel
+                              {
+                                  Id = e.Id,
+                                  Title = e.Title,
+                                  StartDateTime = e.StartDateTime,
+                                  Duration = e.Duration,
+                                  Author = e.Author.FullName,
+                                  Location = e.Location
+                              }).FirstOrDefault();
+            return View(deleteEvent);
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int? id)
+        {
+            var deleteEvent = this.db.Events.FirstOrDefault(x => x.Id == id);
+            if (id != null && deleteEvent != null)
+            {
+                this.db.Events.Remove(deleteEvent);
+                db.SaveChanges();
+                this.AddNotification("Event Deleted.", NotificationType.INFO);
+                return RedirectToAction("My");
+            }
+
+            this.AddNotification("Error occur while deleting.", NotificationType.ERROR);
+            //var deletedEvent = this.db.Events.FirstOrDefault(x => x.Id == id);
+            return View(deleteEvent);
+        }
+
     }
 }

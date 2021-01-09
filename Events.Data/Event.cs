@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Events.Data
 {
@@ -35,5 +37,10 @@ namespace Events.Data
         public bool IsPublic { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public string ImagePath { get; set; }
+        [NotMapped]
+        public HttpPostedFileBase ImageFile { get; set; }
+
     }
 }

@@ -15,6 +15,7 @@ namespace Events.Web.Models
         public TimeSpan? Duration { get; set; }
         public string Author { get; set; }
         public string Location { get; set; }
+        public string ImagePath { get; set; }
 
         public static Expression<Func<Event, EventViewModel>> ViewModel
         {
@@ -27,7 +28,8 @@ namespace Events.Web.Models
                     StartDateTime = e.StartDateTime,
                     Duration = e.Duration,
                     Author = e.Author.FullName,
-                    Location = e.Location
+                    Location = e.Location,
+                    ImagePath = e.ImagePath
                 };
             }
         }

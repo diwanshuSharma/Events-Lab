@@ -1,8 +1,11 @@
 ﻿@model Events.Web.Models.EventDetailsViewModel
+@{ 
+    string currentUserId = ViewBag.CurrentUserId;
+}
 
 @if (Model.Description != null)
 {
-    <div class="description">Description: @Model.Description</div>
+    <div class="text-info text-justify font-weight-bold">Description: @Model.Description</div>
 }
 
 @if (Model.Comment.Any())
@@ -11,13 +14,17 @@
     <ul>
         @foreach (var comment in Model.Comment)
         {
-            <li>
-                @comment.Text
-                @if (comment.Author != null)
-                {
-                    @:(by @comment.Author)
-                }
-            </li>
+        <li>
+            @comment.Text
+            @if (comment.Author != null)
+            {
+                @:(by @comment.Author)
+            }
+            @if (currentUserId != null && comment.AuthorId != null && comment.AuthorId.Equals(currentUserId))
+            {
+                @Html.ActionLink("Delete", "DeleteComment", "Home", new { id = comment.Id}, new { @class = "btn btn-danger" });
+            }
+        </li>
         }
     </ul>
 }

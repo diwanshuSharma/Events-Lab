@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "AddCommentById";
+}
+
+@using (Html.BeginForm("AddCommentById", "Home", new { id = ViewBag.Id }))
+{
+
+    <hr />
+    <textarea type="text" name="comment" placeholder="Comment here Please"/>
+    <hr />
+    <input type="submit" value="Add" class="btn btn-default" />
+    @Html.ActionLink("Cancel", "Index", "Home", null, htmlAttributes: new { @class = "btn" })
+}
+

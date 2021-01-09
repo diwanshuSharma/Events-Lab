@@ -25,5 +25,9 @@ namespace Events.Web.Models
 
         [Display(Name ="Is Public ?")]
         public bool IsPublic { get; set; }
+
+        [Display(Name ="Upload Image")]
+        public string ImagePath { get; set; }
+        public HttpPostedFileBase ImageFile { get; set; }
     }
 }

@@ -3,31 +3,51 @@
 <div class="col-md-4 col-md-6 col-xs-12">
     <div class="event-box">
         <h2>@Model.Title</h2>
-        <span class="date">@Model.StartDateTime</span>
-        @if(Model.Duration != null)
+        @if (Model.ImagePath != null)
         {
-            <span class="duration">
+            <span>
+                <img class="img-thumbnail" src="@Url.Content(Model.ImagePath)" />
+            </span>
+        }
+
+        <span class="font-weight-bold">@Model.StartDateTime</span>
+        
+        @if (Model.Duration != null)
+        {
+            <span class="font-weight-bold">
                 (@Model.Duration.Value.ToString(@"hh\:mm") hours)
             </span>
         }
-        @if(Model.Author != null)
+        @if (Model.Author != null)
         {
-            <div class="author">Author : @Model.Author</div>
+            <div class="font-weight-bold text-danger">Author : @Model.Author</div>
         }
-        @if(Model.Location != null)
+        @if (Model.Location != null)
         {
             <div class="location">Location: @Model.Location</div>
         }
 
         <div id="event-details-@Model.Id">
             @Ajax.ActionLink("View Details >>", "EventDetailsById", "Home",
-           new { id = Model.Id},
+           new { id = Model.Id },
            new AjaxOptions
            {
                InsertionMode = InsertionMode.Replace,
-               UpdateTargetId = "event-details-"+Model.Id
-           },new { @class="btn btn-default"})
+               UpdateTargetId = "event-details-" + Model.Id
+           }, new { @class = "btn btn-default" })
 
         </div>
+
+        <div id="event-details-@Model.Id">
+            @Ajax.ActionLink("Add Comment >>", "AddCommentById", "Home",
+           new { id = Model.Id },
+           new AjaxOptions
+           {
+               InsertionMode = InsertionMode.Replace,
+               UpdateTargetId = "event-details-" + Model.Id
+           }, new { @class = "btn btn-default" })
+
+        </div>
+
     </div>
 </div>
